@@ -8,18 +8,29 @@ from .models import Post
 
 #views.py <-> models.py 커뮤니케이션
 
-def index(request):
-    #posts = Post.objects.all().order_by('-pk') #내림차순
-    posts = Post.objects.all().order_by('pk') #오름차순
+from django.views.generic import ListView
+
+class PostList(ListView):
+    model = Post
+    ordering = '-pk'
+    # template_name = 'blog/post_list.html' -> 지워도 됨
 
 
-    return render(
-        request,
-       'blog/index.html',
-        {
-            'posts': posts,
-        }
-    )
+
+
+
+# def index(request):
+#     #posts = Post.objects.all().order_by('-pk') #내림차순
+#     posts = Post.objects.all().order_by('pk') #오름차순
+#
+#
+#     return render(
+#         request,
+#        'blog/post_list.html',
+#         {
+#             'posts': posts,
+#         }
+#     )
 
 def single_post_page(request, pk):
     post = Post.objects.get(pk=pk)
