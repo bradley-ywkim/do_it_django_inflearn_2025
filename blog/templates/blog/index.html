@@ -7,8 +7,11 @@
 </head>
 <body>
     <h1>블로그 페이지</h1>
-<!--    {% for p in posts %}-->
-<!--        <h3>{{ p }}</h3>-->
-<!--    {% endfor %}-->
+    {% for p in posts %}
+        <hr/>
+        <h3>{{ p }}</h3>
+        <h4>{{ p.created_at }}</h4>
+        <p>{{ p.content }}</p>
+    {% endfor %}
 </body>
 </html>
