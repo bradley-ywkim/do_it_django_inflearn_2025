@@ -66,7 +66,7 @@
             <!-- Author -->
             <p class="lead">
                 by
-<!--                작성자명 작성 예정-->
+                <!--                작성자명 작성 예정-->
                 <a href="#">Start Bootstrap</a>
 
             </p>
@@ -82,7 +82,11 @@
             <img class="img-fluid rounded" src="{{post.head_image.url}}" alt="{{post.title}}">
 
             <hr>
-
+            <h3>파일다운로드</h3>
+            <a href="{{ post.file_upload.url }}" download>
+                {{ post.file_upload.name }}
+            </a>
+            <hr>
             <!-- Post Content -->
             <p class="lead">{{post.content}}</p>
 

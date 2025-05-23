@@ -8,8 +8,11 @@ class Post(models.Model):
     content = models.TextField()
 
     head_image = models.ImageField(upload_to='blog/image/%Y/%m/%d/', blank=True) #어디에 저장되게 할 건지 정의: 이 폴더에 저장해라.
+    file_upload = models.FileField(upload_to='blog/files/%Y/%m/%d/', blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True) #admin페이지에서 조회 불가
     updated_at = models.DateTimeField(auto_now=True) #admin페이지에서 조회 불가
+
     #author
     #만들었으면 cmder에서 makemigrations
 
