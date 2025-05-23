@@ -173,5 +173,6 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-#신규 추가
+######## 신규 추가 ########
 .idea/
+migrations/
