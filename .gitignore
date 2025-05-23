@@ -176,3 +176,4 @@ cython_debug/
 ######## 신규 추가 ########
 .idea/
 migrations/
+_media/
