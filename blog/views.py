@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .models import Post
 
+from django.views.generic import ListView, DetailView
+
+
 
 #views.py 관리방안
 #FBV: Function Based -> 단순 get, post
@@ -8,7 +11,6 @@ from .models import Post
 
 #views.py <-> models.py 커뮤니케이션
 
-from django.views.generic import ListView
 
 class PostList(ListView):
     model = Post
@@ -16,8 +18,9 @@ class PostList(ListView):
     # template_name = 'blog/post_list.html' -> 지워도 됨
 
 
-
-
+class PostDetail(DetailView):
+    model = Post
+    # template_name = 'blog/post_detail.html'
 
 # def index(request):
 #     #posts = Post.objects.all().order_by('-pk') #내림차순
@@ -31,15 +34,16 @@ class PostList(ListView):
 #             'posts': posts,
 #         }
 #     )
+#
+# def single_post_page(request, pk):
+#     post = Post.objects.get(pk=pk)
+#
+#     return render(
+#         request,
+#         'blog/post_detail.html',
+#         {
+#             'post': post,
+#         }
+#       )
 
-def single_post_page(request, pk):
-    post = Post.objects.get(pk=pk)
-
-    return render(
-        request,
-        'blog/single_page.html',
-        {
-            'post': post,
-        }
-      )
 
