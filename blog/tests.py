@@ -6,6 +6,7 @@ class TestView(TestCase):
     def setUp(self):
         self.client = Client() #Client: 방문자의 브라우저를 의미
 
+
     def test_post_list(self):
         self.assertEqual(2, 2)
 
@@ -52,4 +53,37 @@ class TestView(TestCase):
         self.assertNotIn('아직 게시물이 없습니다.', main_area.text)
 
 
+    def test_post_detail(self):
+
+        # 1.1 포스트가 하나 있다.
+        post_001 = Post.objects.create(  # 쿼리
+            title='첫번째 포스트 입니다.',
+            content='Hello, World. We are the World.',
+        )
+
+        # 게시글 개수
+        self.assertEqual(Post.objects.count(), 1)
+
+        # 게시글 상세 시작 > url 체크
+        # 1.2 포스트의 url은 '/blog/1/'이다.
+        self.assertEqual(post_001.get_absolute_url(), '/blog/1/')
+
+        #
+        response = self.client.get(post_001.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # 네브바
+        navbar = soup.nav
+
+
+        self.assertIn('Blog', navbar.text)
+        self.assertIn('About me', navbar.text)
+
+        self.assertIn(post_001.title, soup.title)
+        main_area = soup.find('div', id='main-area')
+        post_area = main_area.find('div', id='post-area')
+        self.assertIn(post_001.title, post_area.text)
+
+        self.assertIn(post_001.content, post_area.text)
 
