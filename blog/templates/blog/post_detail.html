@@ -79,13 +79,21 @@
             <hr>
 
             <!-- Preview Image -->
+            {% if post.head_image %}
             <img class="img-fluid rounded" src="{{post.head_image.url}}" alt="{{post.title}}">
-
+            {% else %}
+                <h4>이미지가 없어유</h4>
+            {% endif %}
             <hr>
             <h3>파일다운로드</h3>
+            {% if post.file_upload %}
             <a href="{{ post.file_upload.url }}" download>
                 {{ post.file_upload.name }}
             </a>
+            {% else %}
+            <p>첨부파일 없소이다.</p>
+            {% endif %}
+
             <hr>
             <!-- Post Content -->
             <p class="lead">{{post.content}}</p>

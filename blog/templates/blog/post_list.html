@@ -142,12 +142,15 @@
             <!--  blog post-->
             <div class="card mb-4">
                 <a href="#!"
-                ><img
+                >
+                {% if p.head_image %}
+                    <img
                         class="card-img-top"
                         src="{{p.head_image.url}}"
                         alt="{{p.title}}"
                         .00
-                /></a>
+                />{% endif %}
+                </a>
                 <div class="card-body">
                     <div class="small text-muted">{{p.created_at|date:"Y년 n월 j일 H:i"}}</div>
                     <p class="card-text">
