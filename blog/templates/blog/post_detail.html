@@ -72,6 +72,36 @@
                 <a href="#">Start Bootstrap</a>
 
             </p>
+    <!-- HTML template (예: home.html) -->
+<!-- HTML template (예: home.html) -->
+<div class="tradingview-widget-container">
+  <div id="tradingview_rsi"></div>
+  <div class="tradingview-widget-copyright">
+    <a href="https://kr.tradingview.com/symbols/BTCUSD/" rel="noopener" target="_blank"><span class="blue-text">BTCUSD 차트</span></a> by TradingView
+  </div>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
+    new TradingView.widget({
+      "container_id": "tradingview_rsi",
+      "width": "100%",
+      "height": 500,
+      "symbol": "BINANCE:BTCUSDT",  // 원하는 종목으로 변경 가능
+      "interval": "60",             // 60분봉
+      "timezone": "Etc/UTC",
+      "theme": "light",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "hide_legend": false,
+      "save_image": false,
+      "studies": [
+        "RSI@tv-basicstudies"        // ✅ RSI 추가
+      ]
+    });
+  </script>
+</div>
+
 
             <hr>
 
