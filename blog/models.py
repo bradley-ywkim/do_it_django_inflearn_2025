@@ -5,7 +5,9 @@ import os
 #Post 테이블 만들기
 class Post(models.Model):
     title = models.CharField(max_length=50)  #문자 50자까지 받을 수 있음
+    hook_text = models.CharField(max_length=100, blank=True)
     content = models.TextField()
+
 
     head_image = models.ImageField(upload_to='blog/image/%Y/%m/%d/', blank=True) #어디에 저장되게 할 건지 정의: 이 폴더에 저장해라.
     file_upload = models.FileField(upload_to='blog/files/%Y/%m/%d/', blank=True)
