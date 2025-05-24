@@ -16,12 +16,12 @@ class TestView(TestCase):
         self.assertEqual(response.status_code, 200)
         # 1.3 페이지 타이틀에 '추세지표'라는 문구가 있다.
         soup = BeautifulSoup(response.content, 'html.parser') #내용을 가져오고 이건 html이다라고 인지시켜주는 코드
-        self.assertIn(soup.title.text, ['Blog List | 달타냥의 웹사이트'])
+        self.assertIn(soup.title.text, ['Blog | 달타냥의 웹사이트'])
         # 1.4 NavBar가 있다.
         navbar = soup.nav
         # 1.5 Blog, About Me라는 문구가 NavBar에 있따.
         self.assertIn('Blog', navbar.text)
-        self.assertIn('About Me', navbar.text)
+        self.assertIn('About me', navbar.text)
 
         # 2.1 게시물이 하나도 없을 때, 메인 영역에 게시물이 하나도 없을 때
         self.assertEqual(Post.objects.count(), 0)
@@ -80,7 +80,8 @@ class TestView(TestCase):
         self.assertIn('Blog', navbar.text)
         self.assertIn('About me', navbar.text)
 
-        self.assertIn(post_001.title, soup.title)
+        # 첫번째 포스트 제목이 포스트 영역에 있다.
+        self.assertIn(post_001.title, soup.title.text)
         main_area = soup.find('div', id='main-area')
         post_area = main_area.find('div', id='post-area')
         self.assertIn(post_001.title, post_area.text)
