@@ -16,8 +16,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) #admin페이지에서 조회 불가
     updated_at = models.DateTimeField(auto_now=True) #admin페이지에서 조회 불가
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE) #
-
+    # author = models.ForeignKey(User, on_delete=models.CASCADE) #
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL) #계정 삭제해도 글 유지
 
     #만들었으면 cmder에서 makemigrations
 

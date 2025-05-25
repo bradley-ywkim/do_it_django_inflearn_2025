@@ -30,7 +30,7 @@
                 </p>
                 <div class="small text-muted">{{p.created_at|date:"Y년 n월 j일 H:i"}}</div>
                 <p>
-                    <!--                작성자명 쓸 위치-->
+                    <a href="#">{{ p.author | upper}} </a>
                 </p>
                 <a class="btn btn-primary" href="{{p.get_absolute_url}}">Read more →</a>
             </div>

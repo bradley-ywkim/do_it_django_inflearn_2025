@@ -1,7 +1,6 @@
 <!--base.html 상속-->
 {% extends 'blog/base.html' %}
 
-
 {% block head_title %} {{ post.title }} | Blog {% endblock %}
 
 {% block main_area %}
@@ -14,8 +13,8 @@
     <!-- Author -->
     <p class="lead">
         by
-        {{post.author}}
-        <a href="#">Start Bootstrap</a>
+        <!--                작성자명 작성 예정-->
+        <a href="#">{{post.author | upper}}</a>
 
     </p>
     <!-- HTML template (예: home.html) -->
@@ -145,4 +144,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}
