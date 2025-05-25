@@ -1,6 +1,7 @@
 from django.db import models
 import os
 #라이브러리 > 패키지 > 모듈 > 클래스 > 매서드
+from django.contrib.auth.models import User
 
 #Post 테이블 만들기
 class Post(models.Model):
@@ -15,11 +16,13 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) #admin페이지에서 조회 불가
     updated_at = models.DateTimeField(auto_now=True) #admin페이지에서 조회 불가
 
-    #author
+    author = models.ForeignKey(User, on_delete=models.CASCADE) #
+
+
     #만들었으면 cmder에서 makemigrations
 
     def __str__(self):
-        return f'[{self.pk}] {self.title}'
+        return f'[{self.pk}] {self.title} :: {self.author}'
 
 
     def get_absolute_url(self):
