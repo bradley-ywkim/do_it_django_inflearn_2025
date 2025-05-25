@@ -3,10 +3,22 @@ import os
 #라이브러리 > 패키지 > 모듈 > 클래스 > 매서드
 from django.contrib.auth.models import User
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True, null=True)    #카테고리를 이해할 수 있도록 글로 구분=그래서 유니크 되어야 한다.
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+
 #Post 테이블 만들기
 class Post(models.Model):
     title = models.CharField(max_length=50)  #문자 50자까지 받을 수 있음
-    hook_text = models.CharField(max_length=100, blank=True)
+    hook_text = models.CharField(max_length=100, blank=True) #blank = 폼에 입력값 필수 채움 여부, null=db에 빈 값 여부 판단
     content = models.TextField()
 
 
@@ -18,6 +30,7 @@ class Post(models.Model):
 
     # author = models.ForeignKey(User, on_delete=models.CASCADE) #
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL) #계정 삭제해도 글 유지
+    category = models.ForeignKey(Category, null=True, blank = True, on_delete=models.SET_NULL) #카테고리가 지워지더라도 포스트 안지워짐
 
     #만들었으면 cmder에서 makemigrations
 
