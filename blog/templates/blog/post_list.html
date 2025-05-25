@@ -1,7 +1,13 @@
 {% extends 'blog/base.html' %}
 
 {% block main_area %}
-<h1 class="mt-5 my-3">Blog</h1>
+<h1 class="mt-5 my-3">
+    Blog
+    {% if category %}
+        <span class="badge text-bg-secondary">{{category}}</span>
+    {% endif %}
+</h1>
+
 <div class="row">
     <!-- Blog entries-->
 

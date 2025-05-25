@@ -44,7 +44,7 @@ class TestView(TestCase):
         )
 
 
-    def navbar_test(self, soup): #test 기재하면안됨, test가 아닌 함수여서, test기재하면 test 하나의 단위로 봄
+    def navbar_test(self, soup):
         # 네브바
         navbar = soup.nav
         self.assertIn('Blog', navbar.text)
@@ -71,8 +71,6 @@ class TestView(TestCase):
         self.assertIn(f'{self.category_programming} ({self.category_programming.post_set.count()})', categories_card.text)
         self.assertIn(f'{self.category_music} ({self.category_music.post_set.count()})', categories_card.text)
         self.assertIn(f'미분류({Post.objects.filter(category=None).count()})', categories_card.text)
-
-
 
     def test_post_list_with_posts(self):
         self.assertEqual(Post.objects.count(), 3)
@@ -124,28 +122,38 @@ class TestView(TestCase):
 
 
     def test_post_detail(self):
-        # 게시글 개수
-        self.assertEqual(Post.objects.count(), 3)
 
-        # 게시글 상세 시작 > url 체크
-        # 1.2 포스트의 url은 '/blog/1/'이다.
+        self.assertEqual(Post.objects.count(), 3)
         self.assertEqual(self.post_001.get_absolute_url(), '/blog/1/')
 
-        #
         response = self.client.get(self.post_001.get_absolute_url())
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
 
         self.navbar_test(soup)
-
-
-        # 첫번째 포스트 제목이 포스트 영역에 있다.
+        self.category_card_test(soup)
         self.assertIn(self.post_001.title, soup.title.text)
+
         main_area = soup.find('div', id='main-area')
         post_area = main_area.find('div', id='post-area')
         self.assertIn(self.post_001.title, post_area.text)
-        self.assertIn(self.user_trump.username.upper(), post_area.text)
+        self.assertIn(self.post_001.category.name, post_area.text)
 
+        self.assertIn(self.user_trump.username.upper(), post_area.text)
         self.assertIn(self.post_001.content, post_area.text)
 
 
+    def test_category_page(self):
+        response = self.client.get(self.category_programming.get_absolute_url())
+        self.assertEqual(response.status_code, 200) #정상 응답 수신
+
+        soup = BeautifulSoup(response.content, 'html.parser') #파싱 내용 출력
+        self.navbar_test(soup) #내비게이션 바 정상 출력 확인
+        self.category_card_test(soup) #카테고리 목록 ui 정상 출력 확인
+
+        main_area = soup.find('div', id='main-area')
+        self.assertIn(self.category_programming.name, main_area.h1.text)
+        self.assertIn(self.category_programming.name, main_area.text)
+        self.assertIn(self.post_001.title, main_area.text)
+        self.assertNotIn(self.post_002.title, main_area.text)
+        self.assertNotIn(self.post_003.title, main_area.text)

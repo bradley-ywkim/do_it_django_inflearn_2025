@@ -4,17 +4,17 @@ from .models import Post, Category
 from django.views.generic import ListView, DetailView
 
 
+# views.py 관리방안
+# FBV: Function Based -> 단순 get, post
+# CBV: Class Based -> 이게 유지보수 get, post관리상좋다.
 
-#views.py 관리방안
-#FBV: Function Based -> 단순 get, post
-#CBV: Class Based -> 이게 유지보수 get, post관리상좋다.
-
-#views.py <-> models.py 커뮤니케이션
+# views.py <-> models.py 커뮤니케이션
 
 
 class PostList(ListView):
     model = Post
     ordering = '-pk'
+
     # template_name = 'blog/post_list.html' -> 지워도 됨
 
     def get_context_data(self, **kwargs):
@@ -23,32 +23,33 @@ class PostList(ListView):
         context['no_category_post_count'] = Post.objects.filter(category=None).count()
         return context
 
+
 class PostDetail(DetailView):
     model = Post
-    # template_name = 'blog/post_detail.html'
 
-# def index(request):
-#     #posts = Post.objects.all().order_by('-pk') #내림차순
-#     posts = Post.objects.all().order_by('pk') #오름차순
-#
-#
-#     return render(
-#         request,
-#        'blog/post_list.html',
-#         {
-#             'posts': posts,
-#         }
-#     )
-#
-# def single_post_page(request, pk):
-#     post = Post.objects.get(pk=pk)
-#
-#     return render(
-#         request,
-#         'blog/post_detail.html',
-#         {
-#             'post': post,
-#         }
-#       )
+    # 기본으로 제공되는 Post 객체외 다른 데이터를 추가로 넘기는 것.
+    def get_context_data(self, **kwargs):
+        context = super(PostDetail, self).get_context_data()
+        context['categories'] = Category.objects.all()
+        context['no_category_post_count'] = Post.objects.filter(category=None).count()
+        return context
 
 
+def category_page(request, slug):
+    if slug == 'no_category':
+        category = '미분류'
+        post_list = Post.objects.filter(category=None)
+    else:
+        category = Category.objects.get(slug=slug)
+        post_list = Post.objects.filter(category=category)
+
+    return render(
+        request,
+        'blog/post_list.html',
+        {
+            'post_list': post_list,
+            'categories': Category.objects.all(),
+            'no_category_post_count': Post.objects.filter(category=None).count(),
+            'category': category,
+        }
+    )
