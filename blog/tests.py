@@ -6,6 +6,26 @@ class TestView(TestCase):
     def setUp(self):
         self.client = Client() #Client: 방문자의 브라우저를 의미
 
+    def navbar_test(self, soup): #test 기재하면안됨, test가 아닌 함수여서, test기재하면 test 하나의 단위로 봄
+        # 네브바
+        navbar = soup.nav
+        self.assertIn('Blog', navbar.text)
+        self.assertIn('About me', navbar.text)
+
+        logo_btn = navbar.find('a', text='Do It Django')
+        self.assertEqual(logo_btn.attrs['href'], '/')
+
+        home_btn = navbar.find('a', text='Home')
+        self.assertEqual(home_btn.attrs['href'], '/')
+
+        blog_btn = navbar.find('a', text='Blog')
+        self.assertEqual(blog_btn.attrs['href'], '/blog/')
+
+        about_me_btn = navbar.find('a', text='About me')
+        self.assertEqual(about_me_btn.attrs['href'], '/about_me/')
+
+
+
 
     def test_post_list(self):
         self.assertEqual(2, 2)
@@ -17,11 +37,8 @@ class TestView(TestCase):
         # 1.3 페이지 타이틀에 '추세지표'라는 문구가 있다.
         soup = BeautifulSoup(response.content, 'html.parser') #내용을 가져오고 이건 html이다라고 인지시켜주는 코드
         self.assertIn(soup.title.text, ['Blog | 달타냥의 웹사이트'])
-        # 1.4 NavBar가 있다.
-        navbar = soup.nav
-        # 1.5 Blog, About Me라는 문구가 NavBar에 있따.
-        self.assertIn('Blog', navbar.text)
-        self.assertIn('About me', navbar.text)
+
+        self.navbar_test(soup)
 
         # 2.1 게시물이 하나도 없을 때, 메인 영역에 게시물이 하나도 없을 때
         self.assertEqual(Post.objects.count(), 0)
@@ -73,12 +90,7 @@ class TestView(TestCase):
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # 네브바
-        navbar = soup.nav
-
-
-        self.assertIn('Blog', navbar.text)
-        self.assertIn('About me', navbar.text)
+        self.navbar_test(soup)
 
         # 첫번째 포스트 제목이 포스트 영역에 있다.
         self.assertIn(post_001.title, soup.title.text)
